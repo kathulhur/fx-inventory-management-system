@@ -15,5 +15,5 @@ public class NavigationService implements Navigation {
     public void switchToView(String viewToOpen) {
         viewHandler.switchToView(viewToOpen);
     }
-    
+
 }

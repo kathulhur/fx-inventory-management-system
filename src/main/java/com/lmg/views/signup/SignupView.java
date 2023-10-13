@@ -2,31 +2,33 @@ package com.lmg.views.signup;
 
 import java.io.IOException;
 
-import com.lmg.services.Navigation;
-import com.lmg.viewmodels.SignupViewModel;
+import com.lmg.viewmodels.signup.SignupViewModel;
+import com.lmg.views.Controller;
 import com.lmg.views.View;
+import com.lmg.views.ViewHandler;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 
-public class SignupView implements View{
+public class SignupView implements View {
 
-    private SignupViewModel signupViewModel;
-    private Navigation navigation;
+    private ISignupViewModel viewModel;
+    private ViewHandler viewHandler;
 
-    public SignupView(SignupViewModel signupViewModel, Navigation navigation) {
-        this.signupViewModel = signupViewModel;
-        this.navigation = navigation;
+    public SignupView(ViewHandler viewHandler, ISignupViewModel viewModel) {
+        this.viewHandler = viewHandler;
+        this.viewModel = viewModel;
+
     }
     
     @Override
-    public Node load() throws IOException {
+    public Parent load() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SignupView.fxml"));
         Parent root = loader.load();
         SignupController controller = loader.getController();
-        controller.init(signupViewModel, navigation);
+        controller.init(viewHandler, viewModel);
         return root;
     }
+
     
 }

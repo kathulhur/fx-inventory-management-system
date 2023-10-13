@@ -2,8 +2,9 @@ package com.lmg.views;
 
 import java.io.IOException;
 
-import javafx.scene.Node;
+import javafx.scene.Parent;
 
 public interface View {
-    Node load() throws IOException;
+    public Parent load() throws IOException;
+
 }

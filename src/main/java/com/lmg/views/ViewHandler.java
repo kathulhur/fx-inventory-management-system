@@ -2,15 +2,16 @@ package com.lmg.views;
 
 import java.io.IOException;
 
-import com.lmg.services.Navigation;
-import com.lmg.services.NavigationService;
 import com.lmg.viewmodels.ViewModelFactory;
+import com.lmg.views.checkPrice.CheckPriceView;
+import com.lmg.views.createProduct.CreateProductView;
+import com.lmg.views.dashboard.DashboardView;
 import com.lmg.views.inventory.InventoryView;
 import com.lmg.views.login.LoginView;
-import com.lmg.views.modals.OnSubmit;
-import com.lmg.views.modals.checkPrice.CheckPriceModal;
-import com.lmg.views.modals.product.create.CreateProductModal;
+import com.lmg.views.modals.TransactionDetail.TransactionDetailView;
 import com.lmg.views.signup.SignupView;
+import com.lmg.views.transaction.TransactionView;
+import com.lmg.views.transactions.TransactionsView;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,33 +23,39 @@ public class ViewHandler {
     
 
     private Stage stage;
-    private ViewModelFactory viewModelFactory;
-    private Navigation navigation;
     private AnchorPane root;
     private Stage modalStage;
-
+    private ViewModelFactory viewModelFactory;
     public ViewHandler(Stage stage, ViewModelFactory viewModelFactory) {
-        this.stage = stage;
         this.viewModelFactory = viewModelFactory;
-        this.navigation = new NavigationService(this);
+        this.stage = stage;
+        setupStage(stage);
+    }
+    
+    private void setupStage(Stage stage) {
+        stage.setMinHeight(720);
+        stage.setMinWidth(1280);
+        stage.setTitle("Login");
+        
         try {
             root = FXMLLoader.load(getClass().getResource("Root.fxml"));
         } catch (Exception e) {
             System.out.println("Error opening root view");
         }
-
+        
         modalStage = new Stage();
         modalStage.initOwner(stage);
         modalStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
         modalStage.initStyle(javafx.stage.StageStyle.UNDECORATED);
 
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        
+        switchToView("login");
     }
     
     public void start() {
-        stage.setTitle("Login");
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        switchToView("login");
+        
         stage.show();
     }
 
@@ -85,6 +92,30 @@ public class ViewHandler {
                 }
 
                 break;
+
+            case "transactions":
+                try {
+                    openTransactionsView();
+                    System.out.println("Opened transactions view");
+
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                    System.out.println("Error opening transactions view");
+                }
+
+                break;
+
+            case "dashboard":
+                try {
+                    openDashboardView();
+                    System.out.println("Opened dashboard view");
+
+                } catch (Exception e) {
+                    System.out.println("Error opening dashboard view");
+                }
+
+                break;
+                
             default:
                 System.err.println("View not found");
         }
@@ -99,44 +130,63 @@ public class ViewHandler {
         return node;
     }
 
+    private void mountView(Node node) {
+        root.getChildren().setAll(setNodeAnchor(node));
+    }
+
     private void openSignupView() throws IOException {
-        SignupView signupView = new SignupView(viewModelFactory.getSignupViewModel(), navigation);
-        root.getChildren().setAll(setNodeAnchor(signupView.load()));
+        View signupView = new SignupView(this, viewModelFactory.getSignupViewModel());
+        mountView(signupView.load());
             
     }
 
     private void openLoginView() throws IOException {
-        LoginView loginView = new LoginView(viewModelFactory.getLoginViewModel(), navigation);
-
-        root.getChildren().setAll(setNodeAnchor(loginView.load()));
+        View loginView = new LoginView(this, viewModelFactory.getLoginViewModel());
+        mountView(loginView.load());
     }
 
     private void openInventoryView() throws IOException {
-        InventoryView inventoryView = new InventoryView(this, viewModelFactory.getInventoryViewModel());
-        Node node = inventoryView.load();
-        root.getChildren().setAll(node);
+        View view = new InventoryView(this, viewModelFactory.getInventoryViewModel());
+        mountView(view.load());
     }
+
+    private void openTransactionsView() throws IOException {
+        View view = new TransactionsView(this, viewModelFactory.getTransactionsViewModel());
+        mountView(view.load());
+    }
+
+    private void openDashboardView() throws IOException {
+        View dashboardView = new DashboardView(this, viewModelFactory.getDashboardViewModel());
+        mountView(dashboardView.load());
+    }
+
 
     
-    public void showCreateProductModal(OnSubmit onSubmit) throws IOException{
-        openCreateProductModal(onSubmit);
+    public void showTransactionModal() throws IOException {
+        View transactionModal = new TransactionView(this, viewModelFactory.getTransactionViewModel());
+        modalStage.setScene(new Scene(transactionModal.load()));
+        modalStage.show();
     }
 
-    public void showCheckPriceModal() throws IOException{
-        openCheckPriceModal();
-    }
-
-    private void openCheckPriceModal() throws IOException {
-        CheckPriceModal checkPriceModal = new CheckPriceModal(this, viewModelFactory.getCheckPriceModalViewModel());
+    public void showCheckPriceModal() throws IOException {
+        View checkPriceModal = new CheckPriceView(this, viewModelFactory.getCheckPriceModalViewModel());
         modalStage.setScene(new Scene(checkPriceModal.load()));
         modalStage.show();
     }
 
-    private void openCreateProductModal(OnSubmit onSubmit) throws IOException {
-            CreateProductModal createProductModal = new CreateProductModal(this, viewModelFactory.getCreateProductModalViewModel(), onSubmit);
-            modalStage.setScene(new Scene(createProductModal.load()));
-            modalStage.show();
+    public void showCreateProductModal() throws IOException {
+        View createProductModal = new CreateProductView(this,
+                viewModelFactory.getCreateProductModalViewModel());
+        modalStage.setScene(new Scene(createProductModal.load()));
+        modalStage.show();
     }
+
+    public void showTransactionDetailModal() throws IOException {
+        View transactionDetailView = new TransactionDetailView(this, viewModelFactory.getTransactionDetailViewModel());
+        modalStage.setScene(new Scene(transactionDetailView.load()));
+        modalStage.show();
+    }
+    
 
     public void closeModal() {
         modalStage.close();

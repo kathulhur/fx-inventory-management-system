@@ -1,35 +1,34 @@
 package com.lmg.views.login;
 
 import java.io.IOException;
-
-import com.lmg.services.Navigation;
-import com.lmg.viewmodels.LoginViewModel;
 import com.lmg.views.View;
+import com.lmg.views.ViewHandler;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 
-public class LoginView implements View{
+public class LoginView implements View {
 
-    private LoginViewModel viewModel;
-    private Navigation navigation;
+    private ILoginViewModel viewModel;
+    private ViewHandler viewHandler;
 
-    public LoginView(LoginViewModel loginViewModel, Navigation navigation) {
+    public LoginView(ViewHandler viewHandler, ILoginViewModel loginViewModel) {
         this.viewModel = loginViewModel;
-        this.navigation = navigation;
+        this.viewHandler = viewHandler;
     }
     
 
     @Override
-    public Node load() throws IOException {
+    public Parent load() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
         Parent root = loader.load();
-
+        
         LoginController controller = loader.getController();
-        controller.init(viewModel, navigation);
+        controller.init(viewHandler, viewModel);
 
         return root;
     }
+
+
     
 }

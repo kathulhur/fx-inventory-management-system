@@ -1,16 +1,12 @@
 package com.lmg.views.login;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.lmg.services.Navigation;
-import com.lmg.viewmodels.LoginViewModel;
+import com.lmg.views.Controller;
+import com.lmg.views.ViewHandler;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -28,23 +24,21 @@ public class LoginController {
     @FXML
     private Button loginButton;
 
-    private LoginViewModel viewModel;
+    private ILoginViewModel viewModel;
     
-    private Navigation navigation;
+    private ViewHandler viewHandler;
     
-    public void init(LoginViewModel loginViewModel, Navigation navigation) {
+    public void init(ViewHandler viewHandler, ILoginViewModel loginViewModel) {
 
         this.viewModel = loginViewModel;
-        this.navigation = navigation;
+        this.viewHandler = viewHandler;
         usernameField.textProperty().bindBidirectional(loginViewModel.usernameProperty());
         passwordField.textProperty().bindBidirectional(loginViewModel.passwordProperty());
         Platform.runLater(() -> {
             rootContainer.setOnKeyPressed(event -> {
                 switch (event.getCode()) {
                     case ENTER:
-                        System.out.println("hihihii");
-                        viewModel.login(usernameField.getText(), passwordField.getText());
-                        navigation.switchToView("signup");
+                        loginButtonClicked(null);
                         break;
                     default:
                         break;
@@ -55,9 +49,8 @@ public class LoginController {
     
     @FXML
     private void loginButtonClicked(ActionEvent event) {
-        System.out.println("log in button clicked");
         viewModel.login(usernameField.getText(), passwordField.getText());
-        navigation.switchToView("inventory");
+        viewHandler.switchToView("dashboard");
     }
 
 

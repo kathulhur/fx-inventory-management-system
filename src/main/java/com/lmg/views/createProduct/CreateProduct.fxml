@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lmg.views.createProduct.CreateProductController">
+   <children>
+      <Label layoutX="78.0" layoutY="124.0" text="Barcode">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="barcodeField" layoutX="167.0" layoutY="119.0" prefHeight="35.0" prefWidth="231.0" />
+      <TextField fx:id="nameField" layoutX="167.0" layoutY="185.0" prefHeight="35.0" prefWidth="231.0" />
+      <Label layoutX="94.0" layoutY="190.0" text="Name">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="pricePerPieceField" layoutX="167.0" layoutY="250.0" prefHeight="35.0" prefWidth="231.0" />
+      <Label layoutX="97.0" layoutY="255.0" text="Price">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="cancelButton" layoutX="313.0" layoutY="334.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" text="Cancel">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="createButton" layoutX="215.0" layoutY="334.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" text="Create" textFill="#1cbc27">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="88.0" layoutY="277.0" text="(per piece)" />
+      <Label layoutX="78.0" layoutY="49.0" text="New Product">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

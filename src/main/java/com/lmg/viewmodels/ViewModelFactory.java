@@ -1,6 +1,13 @@
 package com.lmg.viewmodels;
 
 import com.lmg.models.ModelFactory;
+import com.lmg.viewmodels.dashboard.DashboardViewModel;
+import com.lmg.viewmodels.inventory.InventoryViewModel;
+import com.lmg.viewmodels.login.LoginViewModel;
+import com.lmg.viewmodels.signup.SignupViewModel;
+import com.lmg.viewmodels.transaction.TransactionViewModel;
+import com.lmg.viewmodels.transactionDetail.TransactionDetailViewModel;
+import com.lmg.viewmodels.transactions.TransactionsViewModel;
 
 public class ViewModelFactory {
     private SignupViewModel signupViewModel;
@@ -8,6 +15,10 @@ public class ViewModelFactory {
     private InventoryViewModel inventoryViewModel;
     private CheckPriceModalViewModel checkPriceModalViewModel;
     private CreateProductModalViewModel createProductModalViewModel;
+    private TransactionViewModel transactionViewModel;
+    private TransactionsViewModel transactionsViewModel;
+    private DashboardViewModel dashboardViewModel;
+    private TransactionDetailViewModel transactionDetailViewModel;
     
     public ViewModelFactory(ModelFactory modelFactory) {
         signupViewModel = new SignupViewModel(modelFactory.getUserDAO());
@@ -15,6 +26,10 @@ public class ViewModelFactory {
         inventoryViewModel = new InventoryViewModel(modelFactory.getProductDAO());
         checkPriceModalViewModel = new CheckPriceModalViewModel(modelFactory.getProductDAO());
         createProductModalViewModel = new CreateProductModalViewModel(modelFactory.getProductDAO());
+        transactionViewModel = new TransactionViewModel(modelFactory.getTransactionDAO(), modelFactory.getProductDAO());
+        transactionsViewModel = new TransactionsViewModel(modelFactory.getTransactionDAO());
+        dashboardViewModel = new DashboardViewModel(modelFactory.getTransactionDAO());
+        transactionDetailViewModel = new TransactionDetailViewModel(modelFactory.getTransactionDAO());
 
     }
 
@@ -38,5 +53,20 @@ public class ViewModelFactory {
         return createProductModalViewModel;
     }
 
+    public TransactionViewModel getTransactionViewModel() {
+        return transactionViewModel;
+    }
+
+    public TransactionsViewModel getTransactionsViewModel() {
+        return transactionsViewModel;
+    }
+
+    public DashboardViewModel getDashboardViewModel() {
+        return dashboardViewModel;
+    }
+
+    public TransactionDetailViewModel getTransactionDetailViewModel() {
+        return transactionDetailViewModel;
+    }
 
 }
